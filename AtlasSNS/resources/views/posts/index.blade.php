@@ -6,11 +6,14 @@
         <div class="col-md-8">
             <div class="card">
 
-                    {!! Form::open(['url' => 'top']) !!}
-
+                    @if ($errors->any())
                         @foreach ($errors->all() as $error)
                           <li>{{$error}}</li>
                         @endforeach
+                    @endif
+                    {!! Form::open(['url' => 'top']) !!}
+
+
 
                         @csrf
                         <div class="form-group row">
