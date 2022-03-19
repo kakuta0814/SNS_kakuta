@@ -15,20 +15,20 @@ class PostsController extends Controller
 
     public function create(Request $request)
      {
-        $post = $request->input('post');
+        $post = $request->input();
 
-    $validate = Validator::make($post->all(), [
+    $validate = Validator::make($post, [
         'post' => 'required|string|min:2|max:200',
     ]);
 
     if ($validate->fails()) {
-        return redirect()->route("top")->withErrors($validate->messages());
+        return back()->withErrors($validate)->withInput();
     }
 
 
          \DB::table('posts')->insert([
              'user_id' => Auth::id(),
-             'post' => $post
+             'post' => $post['post']
          ]);
          return redirect('top');
     }
