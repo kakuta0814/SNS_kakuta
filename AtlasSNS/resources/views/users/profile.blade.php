@@ -4,9 +4,11 @@
 
 {!! Form::open(['url' => 'profile']) !!}
 
-@foreach ($errors->all() as $error)
-  <li>{{$error}}</li>
-@endforeach
+@if ($errors->any())
+    @foreach ($errors->all() as $error)
+      <li>{{$error}}</li>
+    @endforeach
+@endif
 
 
 {{ Form::label('ユーザー名') }}
@@ -20,6 +22,13 @@
 
 {{ Form::label('パスワード確認') }}
 {{ Form::text('password_confirmation',null,['class' => 'input']) }}
+
+{{ Form::label('自己紹介') }}
+{{ Form::text('bio',null,['class' => 'input']) }}
+
+{{ Form::label('画像') }}
+{{Form::file('images', ['class'=>'custom-file-input','id'=>'fileImage'])}}
+
 
 {{ Form::submit('更新') }}
 

@@ -17,13 +17,13 @@ class PostsController extends Controller
      {
         $post = $request->input();
 
-    $validate = Validator::make($post, [
-        'post' => 'required|string|min:2|max:200',
-    ]);
+        $validate = Validator::make($post, [
+            'post' => 'required|string|min:2|max:200',
+        ]);
 
-    if ($validate->fails()) {
-        return back()->withErrors($validate)->withInput();
-    }
+        if ($validate->fails()) {
+            return back()->withErrors($validate)->withInput();
+        }
 
 
          \DB::table('posts')->insert([
