@@ -34,28 +34,82 @@ class UsersController extends Controller
         // }
 
         $id = Auth::id();
+        $auth = Auth::user();
+
+        if ($request->file("images") != null) {
+
+            //拡張子付きでファイル名を取得
+            $filenameWithExt = $request->file("images")->getClientOriginalName();
+
+            //ファイル名のみを取得
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+            //拡張子を取得
+            $extension = $request->file("images")->getClientOriginalExtension();
+
+            //保存のファイル名を構築
+            $filenameToStore = $filename."_".time().".".$extension;
+
+            $path = $request->file("images")->storeAs("public/user_images", $filenameToStore);
+        }
 
         $up_username = $request->input('username');
         $up_mail = $request->input('mail');
         $up_password = $request->input('password');
         $up_bio = $request->input('bio');
-        $up_images = $request->input('images');
+
+
+
 
         \DB::table('users')
-            ->where('id', $id)
-            ->update(
-                ['username' => $up_username],
-                ['mail' => $up_mail],
-                ['password' => $up_password],
-                ['bio' => $up_bio],
-                ['images' => $up_images],
+         ->where('id', $id)
+         ->update(
+                 [
+                    'username' => $up_username,
+                    'mail' => $up_mail,
+                    'password' => $up_password,
+                    'bio' => $up_bio,
+                    'images' => $filenameToStore,
+                 ]
+        );
 
-            );
+    //     $user = Auth::user();
 
-        return view('posts.index');
+    //     $form = $request->all();
+    //     $id = Auth::id();
+
+
+    //     $profileImage = $request->file('images');
+    //     if ($profileImage != null) {
+    //         $form['images'] = $this->saveProfileImage($profileImage, $id); // return file name
+    //     }
+
+    //     unset($form['_token']);
+    //     unset($form['_method']);
+    //     $user->fill($form)->save();
+
+    //     return view('posts.index');
+    // }
+
+    // private function saveProfileImage($image, $id) {
+    //     // get instance
+    //     $img = \Image::make($image);
+    //     // resize
+    //     $img->fit(100, 100, function($constraint){
+    //         $constraint->upsize();
+    //     });
+    //     // save
+    //     $file_name = 'profile_'.$id.'.'.$image->getClientOriginalExtension();
+    //     $save_path = 'public/profiles/'.$file_name;
+    //     Storage::put($save_path, (string) $img->encode());
+    //     // return file name
+        return redirect('/profile');
     }
 
-    public function search(){
-        return view('users.search');
+
+
+    public function search(User $user){
+        $all_users = $user->getAllUsers(auth()->user()->id);
+        return view('users.search', ['all_users' => $all_users]);
     }
 }

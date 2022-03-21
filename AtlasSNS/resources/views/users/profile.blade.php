@@ -2,7 +2,8 @@
 
 @section('content')
 
-{!! Form::open(['url' => 'profile']) !!}
+{!! Form::open(['url' => 'profile','enctype' => 'multipart/form-data']) !!}
+<!-- {{ csrf_field() }} -->
 
 @if ($errors->any())
     @foreach ($errors->all() as $error)
@@ -24,7 +25,7 @@
 {{ Form::text('password_confirmation',null,['class' => 'input']) }}
 
 {{ Form::label('自己紹介') }}
-{{ Form::text('bio',null,['class' => 'input']) }}
+{{ Form::text('bio',$auth->bio,['class' => 'input']) }}
 
 {{ Form::label('画像') }}
 {{Form::file('images', ['class'=>'custom-file-input','id'=>'fileImage'])}}
