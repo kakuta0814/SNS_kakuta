@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\User;
+use App\Follow;
 
 class UsersController extends Controller
 {
@@ -67,11 +69,12 @@ class UsersController extends Controller
                  [
                     'username' => $up_username,
                     'mail' => $up_mail,
-                    'password' => $up_password,
+                    'password' => bcrypt($up_password),
                     'bio' => $up_bio,
                     'images' => $filenameToStore,
                  ]
         );
+
 
     //     $user = Auth::user();
 
@@ -109,7 +112,38 @@ class UsersController extends Controller
 
 
     public function search(User $user){
-        $all_users = $user->getAllUsers(auth()->user()->id);
-        return view('users.search', ['all_users' => $all_users]);
+            $all_users = $user->getAllUsers(auth()->user()->id);
+        return view('users.search', ['all_users'  => $all_users]);
     }
+
+
+    // フォロー
+    public function follow(User $user)
+    {
+        $follower = auth()->user();
+        // フォローしているか
+        $is_following = $follower->isFollowing($user->id);
+        if(!$is_following) {
+            // フォローしていなければフォローする
+            $follower->follow($user->id);
+            return back();
+        }
+    }
+
+    // フォロー解除
+    public function unfollow(User $user)
+    {
+        $follower = auth()->user();
+        // フォローしているか
+        $is_following = $follower->isFollowing($user->id);
+        if($is_following) {
+            // フォローしていればフォローを解除する
+            $follower->unfollow($user->id);
+            return back();
+        }
+    }
+
+
+
+
 }

@@ -1,5 +1,9 @@
 <?php
+
+
     $auth = Auth::user();
+
+
 ?>
 
 

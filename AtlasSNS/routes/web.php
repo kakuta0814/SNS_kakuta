@@ -38,7 +38,10 @@ Route::post('/top','PostsController@create');
 Route::get('/profile','UsersController@profile');
 Route::post('/profile','UsersController@profile_update');
 
-Route::get('/search','UsersController@index');
+Route::get('/search','UsersController@search');
+
+Route::post('search/{user}/follow', 'UsersController@follow')->name('follow');
+Route::delete('search/{user}/unfollow', 'UsersController@unfollow')->name('unfollow');
 
 Route::get('/follow-list','PostsController@index');
 Route::get('/follower-list','PostsController@index');
