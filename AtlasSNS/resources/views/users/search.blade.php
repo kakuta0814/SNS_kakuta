@@ -8,10 +8,11 @@
                 @foreach ($all_users as $user)
                     <div class="card">
                         <div class="card-haeder p-3 w-100 d-flex">
-                            <img src="storage/user_images/{{ $user->images }}" class="rounded-circle" width="50" height="50">
+                            <img src="{{ asset('storage/user_images/' .$user->images )}}" class="rounded-circle" width="50" height="50">
                             <div class="ml-2 d-flex flex-column">
-                                <p class="mb-0">{{ $user->username }}</p>
-                                <a href="{{ url('users/' .$user->id) }}" class="text-secondary">{{ $user->username }}</a>
+                                <p class="mb-0">
+                                <a href="{{ route('other',['userdata'=>$user->id]) }}" class="text-secondary">{{ $user->username }}</a>
+                                </p>
                             </div>
 
 
@@ -22,14 +23,14 @@
                             @endif
                             <div class="d-flex justify-content-end flex-grow-1">
                                 @if (auth()->user()->isFollowing($user->id))
-                                    <form action="#" method="POST">
+                                    <form action="{{ route('unfollow', ['user' => $user->id]) }}" method="POST">
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}
 
                                         <button type="submit" class="btn btn-danger">フォロー解除</button>
                                     </form>
                                 @else
-                                    <form action="#" method="POST">
+                                    <form action="{{ route('follow', ['user' => $user->id]) }}" method="POST">
                                         {{ csrf_field() }}
 
                                         <button type="submit" class="btn btn-primary">フォローする</button>

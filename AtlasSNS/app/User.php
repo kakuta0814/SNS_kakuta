@@ -33,6 +33,11 @@ class User extends Authenticatable
         return $this->Where('id', '<>', $user_id)->paginate(5);
     }
 
+    public function getUsers(Int $user_id)
+    {
+        return $this->Where('id', $user_id)->get();
+    }
+
 
 
 

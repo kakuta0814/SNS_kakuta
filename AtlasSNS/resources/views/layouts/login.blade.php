@@ -36,7 +36,7 @@
         <h1><a href="/top"><img src="{{ asset('images/atlas.png') }}"></a></h1>
             <div id="">
                 <div id="">
-                    <p>〇〇さん<img src="storage/user_images/{{$auth->images}}"></p>
+                    <p>〇〇さん<img src="{{ asset('storage/user_images/' .$auth->images )}}"></p>
                 <div>
                 <ul>
                     <li><a href="/top">ホーム</a></li>

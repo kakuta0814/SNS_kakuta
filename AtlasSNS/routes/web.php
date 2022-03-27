@@ -38,6 +38,8 @@ Route::post('/top','PostsController@create');
 Route::get('/profile','UsersController@profile');
 Route::post('/profile','UsersController@profile_update');
 
+Route::get('/profile/{userdata}','UsersController@userdata')->name('other');
+
 Route::get('/search','UsersController@search');
 
 Route::post('search/{user}/follow', 'UsersController@follow')->name('follow');

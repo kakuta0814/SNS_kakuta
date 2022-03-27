@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Follow;
+use App\Post;
 
 class UsersController extends Controller
 {
@@ -141,6 +142,29 @@ class UsersController extends Controller
             $follower->unfollow($user->id);
             return back();
         }
+    }
+
+    public function userdata(User $user, Post $post, Follow $follow ,$userdata)
+    {
+
+        $user = User::find($userdata);
+        $login_user = auth()->user();
+        $is_following = $login_user->isFollowing($userdata);
+        $is_followed = $login_user->isFollowed($userdata);
+        $timelines = $post->getUserTimeLine($userdata);
+        $tweet_count = $post->getTweetCount($userdata);
+        $follow_count = $follow->getFollowCount($userdata);
+        $follower_count = $follow->getFollowerCount($userdata);
+
+        return view('users.other', [
+            'user'           => $user,
+            'is_following'   => $is_following,
+            'is_followed'    => $is_followed,
+            'timelines'      => $timelines,
+            'tweet_count'    => $tweet_count,
+            'follow_count'   => $follow_count,
+            'follower_count' => $follower_count
+        ]);
     }
 
 
