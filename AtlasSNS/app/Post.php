@@ -16,4 +16,8 @@ class Post extends Model
     {
         return $this->where('user_id', $user_id)->count();
     }
+
+
+
+
 }

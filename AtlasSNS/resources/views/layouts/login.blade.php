@@ -1,10 +1,3 @@
-<?php
-
-
-    $auth = Auth::user();
-
-
-?>
 
 
 <!DOCTYPE html>
@@ -36,7 +29,7 @@
         <h1><a href="/top"><img src="{{ asset('images/atlas.png') }}"></a></h1>
             <div id="">
                 <div id="">
-                    <p>〇〇さん<img src="{{ asset('storage/user_images/' .$auth->images )}}"></p>
+                    <p>{{ auth()->user()->username }}さん<img src="{{ asset('storage/user_images/' .auth()->user()->images )}}"></p>
                 <div>
                 <ul>
                     <li><a href="/top">ホーム</a></li>
@@ -52,15 +45,15 @@
         </div >
         <div id="side-bar">
             <div id="confirm">
-                <p>〇〇さんの</p>
+                <p>{{ auth()->user()->username }}さんの</p>
                 <div>
                 <p>フォロー数</p>
-                <p>〇〇名</p>
+                <p>名</p>
                 </div>
                 <p class="btn"><a href="/follow-list">フォローリスト</a></p>
                 <div>
                 <p>フォロワー数</p>
-                <p>〇〇名</p>
+                <p>名</p>
                 </div>
                 <p class="btn"><a href="/follower-list">フォロワーリスト</a></p>
             </div>

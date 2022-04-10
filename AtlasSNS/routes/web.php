@@ -45,5 +45,5 @@ Route::get('/search','UsersController@search');
 Route::post('search/{user}/follow', 'UsersController@follow')->name('follow');
 Route::delete('search/{user}/unfollow', 'UsersController@unfollow')->name('unfollow');
 
-Route::get('/follow-list','PostsController@index');
-Route::get('/follower-list','PostsController@index');
+Route::get('/follow-list','UsersController@follow_list');
+Route::get('/follower-list','UsersController@follower_list');
