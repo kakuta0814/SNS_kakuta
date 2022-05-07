@@ -2,39 +2,61 @@
 
 @section('content')
 
+
+
+
 {!! Form::open(['url' => 'profile','enctype' => 'multipart/form-data']) !!}
 <!-- {{ csrf_field() }} -->
 
-@if ($errors->any())
+
+
+@if (isset( $errors ))
+<div class="error-message">
+    <div class="error-inner">
     @foreach ($errors->all() as $error)
-      <li>{{$error}}</li>
+        <li>{{$error}}</li>
     @endforeach
+    </div>
+</div>
 @endif
 
+<div class="flex-box">
+  <div class="profile-center flex-box">
 
-{{ Form::label('ユーザー名') }}
-{{ Form::text('username',$auth->username,['class' => 'input']) }}
-
-{{ Form::label('メールアドレス') }}
-{{ Form::text('mail',$auth->mail,['class' => 'input']) }}
-
-{{ Form::label('パスワード') }}
-{{ Form::text('password',null,['class' => 'input']) }}
-
-{{ Form::label('パスワード確認') }}
-{{ Form::text('password_confirmation',null,['class' => 'input']) }}
-
-{{ Form::label('自己紹介') }}
-{{ Form::text('bio',$auth->bio,['class' => 'input']) }}
-
-{{ Form::label('画像') }}
-{{Form::file('images', ['class'=>'custom-file-input','id'=>'fileImage'])}}
+    <div class="tweet-icon">
+        <img class="rounded-circle"  width="50" height="50" src="{{ asset('storage/user_images/' .auth()->user()->images )}}">
+    </div>
 
 
-{{ Form::submit('更新') }}
+    <div class="profile-header">
+      {{ Form::label('user name') }}<br>
+      {{ Form::label('mail adress') }}<br>
+      {{ Form::label('password') }}<br>
+      {{ Form::label('password comfirm') }}<br>
+      {{ Form::label('bio') }}<br>
+      {{ Form::label('icon image') }}<br>
+    </div>
+
+    <div class="profile-form">
+      {{ Form::text('username',$auth->username,['class' => 'input']) }}<br>
+      {{ Form::text('mail',$auth->mail,['class' => 'input']) }}<br>
+      {{ Form::text('password',null,['class' => 'input']) }}<br>
+      {{ Form::text('password_confirmation',null,['class' => 'input']) }}<br>
+      {{ Form::text('bio',$auth->bio,['class' => 'input']) }}<br>
+      {{Form::file('images', ['class'=>'profile-image','id'=>'fileImage'])}}<br>
+    </div>
+
+
+  </div>
+
+
+</div>
+
+<div class="update-btn">
+  {{ Form::submit('更新',['class' => 'btn btn-danger']) }}
+</div>
 
 
 {!! Form::close() !!}
-
 
 @endsection

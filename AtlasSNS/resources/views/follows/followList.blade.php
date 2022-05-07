@@ -1,36 +1,69 @@
 @extends('layouts.login')
 
 @section('content')
+    <div class="flex-box icon-area">
 
-<div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                @foreach ($all_users as $user)
-                @if (auth()->user()->isFollowing($user->id))
-                    <div class="card">
-                        <div class="card-haeder p-3 w-100 d-flex">
-                            <a href="{{ route('other',['userdata'=>$user->id]) }}" class="text-secondary">
-                                <img src="{{ asset('storage/user_images/' .$user->images )}}" class="rounded-circle" width="50" height="50">
-                            </a>
-                        </div>
+        <div class="follow-title">
+            <P>Follow List</P>
+        </div>
+
+        <div class="icon-margin flex-box">
+            @foreach ($all_users as $user)
+            @if (auth()->user()->isFollowing($user->id))
+                <div class="icon-space">
+                    <div>
+                        <a href="{{ route('other',['userdata'=>$user->id]) }}">
+                            <img src="{{ asset('storage/user_images/' .$user->images )}}" class="rounded-circle" width="50" height="50">
+                        </a>
                     </div>
-                    @endif
-                @endforeach
-            </div>
+                </div>
+                @endif
+            @endforeach
         </div>
-        <div class="my-4 d-flex justify-content-center">
-            {{ $all_users->links() }}
-        </div>
+
     </div>
+
+
+
+
+
+
 
     @foreach ($all_posts as $post)
         @if(auth()->user()->isFollowing($post->user_id))
-            <img src="{{ asset('storage/user_images/' .$post->images )}}" class="rounded-circle" width="50" height="50"><br>
-            ユーザID:{{ $post->user_id }}<br>
-            アカウント：{{ $post->username }}<br>
-            投稿：{{ $post->post }}<br>
-            時間：{{ $post->created_at }}<br><br>
-        @endif
-    @endforeach
+    <div class="tweet">
+        <div class="flex-box">
+            <div class="tweet-icon">
+                <img src="{{ asset('storage/user_images/' .$post->images )}}" class="rounded-circle" width="50" height="50">
+            </div>
+
+            <div class="tweet-data">
+
+                <div class="flex-box">
+                    <div class="tweet-username">
+                        <P>{{ $post->username }}</P>
+                    </div>
+
+                </div>
+
+                <div>{{ $post->post }}</div>
+
+
+
+
+            </div>
+        </div>
+
+        <div>
+            <div class="tweet-time">
+                <div><p>{{ $post->created_at }}</p></div>
+            </div>
+
+        </div>
+    </div>
+    @endif
+
+
+@endforeach
 
 @endsection

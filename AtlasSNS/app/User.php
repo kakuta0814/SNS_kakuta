@@ -33,6 +33,8 @@ class User extends Authenticatable
         return $this->Where('id', '<>', $user_id)->paginate(5);
     }
 
+
+
     public function getUsers(Int $user_id)
     {
         return $this->Where('id', $user_id)->get();
@@ -75,8 +77,40 @@ class User extends Authenticatable
     // フォローされているか
     public function isFollowed(Int $user_id)
     {
-        return $this->follows()->where('following_id', $user_id)->exists();
+        $auth_id = auth()->user()->id;
+        return $this->followers()->where('following_id', $user_id)->exists();
     }
+
+
+    // public static $editNameRules = array(
+
+    // 'username' => 'required|string|min:2|max:12'
+
+    // );
+
+    // public static $editEmailRules = array(
+
+    // 'mail' => 'required|string|email|min:5|max:40|unique:users'
+
+    // );
+
+    // public static $editPasswordRules = array(
+
+    // 'password' => 'string|min:8|max:20|confirmed'
+
+    // );
+
+    // public static $editPassconRules = array(
+
+    // 'password_confirmation' => 'string|min:8|max: 20'
+
+    // );
+
+    // public static $editBioRules = array(
+
+    // 'bio' => 'max:150'
+
+    // );
 
 
 

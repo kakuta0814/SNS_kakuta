@@ -36,6 +36,30 @@ class PostsController extends Controller
          return redirect('top');
     }
 
+    public function update(Request $request)
+     {
+        $id = $request->input('id');
+        $post = $request->input('post');
+
+        // $validate = Validator::make($post, [
+        //     'post' => 'required|string|min:2|max:200',
+        // ]);
+
+        // if ($validate->fails()) {
+        //     return back()->withErrors($validate)->withInput();
+        // }
+
+        \DB::table('posts')
+            ->where('id', $id)
+            ->update(
+                ['post' => $post]
+            );
+            // バリデーション
+
+
+         return redirect('top');
+    }
+
     public function delete($id)
     {
         \DB::table('posts')
@@ -44,6 +68,8 @@ class PostsController extends Controller
 
         return redirect('posts.index');
     }
+
+
 
 
     public function index(User $user ){

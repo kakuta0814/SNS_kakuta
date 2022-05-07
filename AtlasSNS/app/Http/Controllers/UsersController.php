@@ -21,23 +21,12 @@ class UsersController extends Controller
 
     public function profile_update(Request $request){
 
-        // $user = $request->input();
 
-        // $validate = Validator::make($user, [
-        //     'username' => 'required|string|min:2|max:12',
-        //     'mail' => 'required|string|email|min:5|max:40|unique:users',
-        //     'password' => 'string|min:8|max:20|confirmed',
-        //     'password_confirmation' => 'required|string|min:8|max: 20',
-        //     'bio' => 'string|max:150',
-        //     'images' => 'mimes:jpg,png,bmp,gif,svg',
-        // ]);
-
-        // if ($validate->fails()) {
-        //     return back()->withErrors($validate)->withInput();
-        // }
 
         $id = Auth::id();
         $auth = Auth::user();
+
+
 
         if ($request->file("images") != null) {
 
@@ -64,58 +53,280 @@ class UsersController extends Controller
 
 
 
-        \DB::table('users')
-         ->where('id', $id)
-         ->update(
-                 [
-                    'username' => $up_username,
-                    'mail' => $up_mail,
-                    'password' => bcrypt($up_password),
-                    'bio' => $up_bio,
-                    'images' => $filenameToStore,
-                 ]
-        );
+        // PW:×
+        // BIO:×
+        // IMG:×
+        if (!isset( $up_password ) && !isset( $up_bio ) && !isset( $filenameWithExt ) ){
+
+            $validator = $request->validate([
+                'username' => 'required|string|min:2|max:12',
+                'mail' => 'required|string|email|min:5|max:40|unique:users',
+            ]);
+
+            if ($validator->fails()) {
+                    return redirect('/profile')
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            \DB::table('users')
+            ->where('id', $id)
+            ->update(
+                    [
+                        'username' => $up_username,
+                        'mail' => $up_mail,
+                    ]
+            );
+
+        }
+        // PW:〇
+        // BIO:×
+        // IMG:×
+        elseif (isset( $up_password ) && !isset( $up_bio ) && !isset( $filenameWithExt ) ){
+
+            $validator = $request->validate([
+
+                'username' => 'required|string|min:2|max:12',
+                'mail' => 'required|string|email|min:5|max:40|unique:users',
+                'password' => 'string|min:8|max:20|confirmed',
+                'password_confirmation' => 'string|min:8|max: 20',
+            ]);
+
+            if ($validator->fails()) {
+                    return redirect('/profile')
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            \DB::table('users')
+            ->where('id', $id)
+            ->update(
+                    [
+                        'username' => $up_username,
+                        'mail' => $up_mail,
+                        'password' => bcrypt($up_password),
+                    ]
+            );
+        }
+        // PW:×
+        // BIO:〇
+        // IMG:×
+        elseif (!isset( $up_password ) && isset( $up_bio ) && !isset( $filenameWithExt ) ){
+
+            $validator = $request->validate([
+
+                'username' => 'required|string|min:2|max:12',
+                'mail' => 'required|string|email|min:5|max:40|unique:users',
+                'bio' => 'max:150',
+            ]);
+
+            if ($validator->fails()) {
+                    return redirect('/profile')
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            \DB::table('users')
+            ->where('id', $id)
+            ->update(
+                    [
+                        'username' => $up_username,
+                        'mail' => $up_mail,
+                        'bio' => $up_bio,
+                    ]
+            );
+        }
+        // PW:×
+        // BIO:×
+        // IMG:〇
+        elseif (!isset( $up_password ) && !isset( $up_bio ) && isset( $filenameWithExt ) ){
+
+            $validator = $request->validate([
+
+                'username' => 'required|string|min:2|max:12',
+                'mail' => 'required|string|email|min:5|max:40|unique:users',
+            ]);
+
+            if ($validator->fails()) {
+                    return redirect('/profile')
+                    ->withErrors($validator)
+                    ->withInput();
+            }
 
 
-    //     $user = Auth::user();
+            \DB::table('users')
+            ->where('id', $id)
+            ->update(
+                    [
+                        'username' => $up_username,
+                        'mail' => $up_mail,
+                        'images' => $filenameToStore,
+                    ]
+            );
+        }
+        // PW:〇
+        // BIO:〇
+        // IMG:×
+        elseif (isset( $up_password ) && isset( $up_bio ) && !isset( $filenameWithExt ) ){
 
-    //     $form = $request->all();
-    //     $id = Auth::id();
+            $validator = $request->validate([
+
+                'username' => 'required|string|min:2|max:12',
+                'mail' => 'required|string|email|min:5|max:40|unique:users',
+                'password' => 'string|min:8|max:20|confirmed',
+                'password_confirmation' => 'string|min:8|max: 20',
+                'bio' => 'max:150',
+            ]);
+
+            if ($validator->fails()) {
+                    return redirect('/profile')
+                    ->withErrors($validator)
+                    ->withInput();
+            }
 
 
-    //     $profileImage = $request->file('images');
-    //     if ($profileImage != null) {
-    //         $form['images'] = $this->saveProfileImage($profileImage, $id); // return file name
-    //     }
+            \DB::table('users')
+            ->where('id', $id)
+            ->update(
+                    [
+                        'username' => $up_username,
+                        'mail' => $up_mail,
+                        'password' => bcrypt($up_password),
+                        'bio' => $up_bio,
+                    ]
+            );
+        }
+        // PW:×
+        // BIO:〇
+        // IMG:〇
+        elseif (!isset( $up_password ) && isset( $up_bio ) && isset( $filenameWithExt ) ){
 
-    //     unset($form['_token']);
-    //     unset($form['_method']);
-    //     $user->fill($form)->save();
+            $validator = $request->validate([
 
-    //     return view('posts.index');
-    // }
+                'username' => 'required|string|min:2|max:12',
+                'mail' => 'required|string|email|min:5|max:40|unique:users',
+                'bio' => 'max:150',
+            ]);
 
-    // private function saveProfileImage($image, $id) {
-    //     // get instance
-    //     $img = \Image::make($image);
-    //     // resize
-    //     $img->fit(100, 100, function($constraint){
-    //         $constraint->upsize();
-    //     });
-    //     // save
-    //     $file_name = 'profile_'.$id.'.'.$image->getClientOriginalExtension();
-    //     $save_path = 'public/profiles/'.$file_name;
-    //     Storage::put($save_path, (string) $img->encode());
-    //     // return file name
+            if ($validator->fails()) {
+                    return redirect('/profile')
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+
+            \DB::table('users')
+            ->where('id', $id)
+            ->update(
+                    [
+                        'username' => $up_username,
+                        'mail' => $up_mail,
+                        'bio' => $up_bio,
+                        'images' => $filenameToStore,
+                    ]
+            );
+        }
+        // PW:〇
+        // BIO:×
+        // IMG:〇
+        elseif (isset( $up_password ) && !isset( $up_bio ) && isset( $filenameWithExt ) ){
+
+            $validator = $request->validate([
+
+                'username' => 'required|string|min:2|max:12',
+                'mail' => 'required|string|email|min:5|max:40|unique:users',
+                'password' => 'string|min:8|max:20|confirmed',
+                'password_confirmation' => 'string|min:8|max: 20',
+            ]);
+
+            if ($validator->fails()) {
+                    return redirect('/profile')
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+            \DB::table('users')
+            ->where('id', $id)
+            ->update(
+                    [
+                        'username' => $up_username,
+                        'mail' => $up_mail,
+                        'password' => bcrypt($up_password),
+                        'images' => $filenameToStore,
+                    ]
+            );
+        }
+        // PW:〇
+        // BIO:〇
+        // IMG:〇
+        elseif (isset( $up_password ) && isset( $up_bio ) && isset( $filenameWithExt ) ){
+
+            $validator = $request->validate([
+
+                'username' => 'required|string|min:2|max:12',
+                'mail' => 'required|string|email|min:5|max:40|unique:users',
+                'password' => 'string|min:8|max:20|confirmed',
+                'password_confirmation' => 'string|min:8|max: 20',
+            ]);
+
+            if ($validator->fails()) {
+                    return redirect('/profile')
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+            \DB::table('users')
+            ->where('id', $id)
+            ->update(
+                    [
+                        'username' => $up_username,
+                        'mail' => $up_mail,
+                        'password' => bcrypt($up_password),
+                        'bio' => $up_bio,
+                        'images' => $filenameToStore,
+                    ]
+            );
+        }
+
+        // \DB::table('users')
+        //  ->where('id', $id)
+        //  ->update(
+        //          [
+        //             'username' => $up_username,
+        //             'mail' => $up_mail,
+        //             'password' => bcrypt($up_password),
+        //             'bio' => $up_bio,
+        //             'images' => $filenameToStore,
+        //          ]
+        // );
+
+
         return redirect('/profile');
     }
 
 
 
-    public function search(User $user){
-            $all_users = $user->getAllUsers(auth()->user()->id);
-        return view('users.search', ['all_users'  => $all_users]);
+    public function search(Request $request,User $user){
+
+        $search = $request->input('search');
+
+        if (!empty($search)) {
+        $all_users = \DB::table('users')
+            ->where('username', 'LIKE', "%{$search}%")
+            ->get();
+        }
+        else{
+            // $all_users = $user->getAllUsers(auth()->user()->id);
+            // $this->Where('id', '<>', $user_id)->paginate(5);
+
+            $all_users = \DB::table('users')
+            ->where('id', '!=', auth()->user()->id)
+            ->get();
+        }
+
+
+
+        return view('users.search', ['all_users'  => $all_users,'search'  => $search]);
     }
+
 
 
     // フォロー
@@ -217,8 +428,5 @@ class UsersController extends Controller
             'all_follows'  => $all_follows,
         ]);
     }
-
-
-
 
 }
