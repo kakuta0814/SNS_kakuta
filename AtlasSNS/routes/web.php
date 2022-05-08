@@ -34,6 +34,7 @@ Route::post('/added', 'Auth\RegisterController@added');
 //ログイン中のページ
 Route::get('/top','PostsController@index');
 Route::post('/top','PostsController@create');
+
 Route::post('/update','PostsController@update');
 
 Route::get('/profile','UsersController@profile');
@@ -48,3 +49,6 @@ Route::delete('search/{user}/unfollow', 'UsersController@unfollow')->name('unfol
 
 Route::get('/follow-list','UsersController@follow_list');
 Route::get('/follower-list','UsersController@follower_list');
+
+
+Route::get('/post/delete/{id}', 'PostsController@delete');

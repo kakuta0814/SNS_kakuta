@@ -141,9 +141,5 @@
         </div>
     </div>
 
-    <footer>
-    </footer>
-    <script src="JavaScriptファイルのURL"></script>
-    <script src="JavaScriptファイルのURL"></script>
 </body>
 </html>

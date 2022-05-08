@@ -6,7 +6,7 @@
 
 
 {!! Form::open(['url' => 'profile','enctype' => 'multipart/form-data']) !!}
-<!-- {{ csrf_field() }} -->
+{{ csrf_field() }}
 
 
 
@@ -40,8 +40,8 @@
     <div class="profile-form">
       {{ Form::text('username',$auth->username,['class' => 'input']) }}<br>
       {{ Form::text('mail',$auth->mail,['class' => 'input']) }}<br>
-      {{ Form::text('password',null,['class' => 'input']) }}<br>
-      {{ Form::text('password_confirmation',null,['class' => 'input']) }}<br>
+      {{ Form::password('password',null,['class' => 'input']) }}<br>
+      {{ Form::password('password_confirmation',null,['class' => 'input']) }}<br>
       {{ Form::text('bio',$auth->bio,['class' => 'input']) }}<br>
       {{Form::file('images', ['class'=>'profile-image','id'=>'fileImage'])}}<br>
     </div>

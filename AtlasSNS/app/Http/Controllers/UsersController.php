@@ -25,6 +25,7 @@ class UsersController extends Controller
 
         $id = Auth::id();
         $auth = Auth::user();
+        $data = $request->all();
 
 
 
@@ -52,42 +53,13 @@ class UsersController extends Controller
 
 
 
-
-        // PW:×
         // BIO:×
         // IMG:×
-        if (!isset( $up_password ) && !isset( $up_bio ) && !isset( $filenameWithExt ) ){
+        if (!isset( $up_bio ) && !isset( $filenameWithExt ) ){
 
-            $validator = $request->validate([
+            $validator = Validator::make($data,[
                 'username' => 'required|string|min:2|max:12',
-                'mail' => 'required|string|email|min:5|max:40|unique:users',
-            ]);
-
-            if ($validator->fails()) {
-                    return redirect('/profile')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            \DB::table('users')
-            ->where('id', $id)
-            ->update(
-                    [
-                        'username' => $up_username,
-                        'mail' => $up_mail,
-                    ]
-            );
-
-        }
-        // PW:〇
-        // BIO:×
-        // IMG:×
-        elseif (isset( $up_password ) && !isset( $up_bio ) && !isset( $filenameWithExt ) ){
-
-            $validator = $request->validate([
-
-                'username' => 'required|string|min:2|max:12',
-                'mail' => 'required|string|email|min:5|max:40|unique:users',
+                'mail' => 'required|string|email|min:5|max:40|unique:users,mail,'.$id.',id',
                 'password' => 'string|min:8|max:20|confirmed',
                 'password_confirmation' => 'string|min:8|max: 20',
             ]);
@@ -107,44 +79,18 @@ class UsersController extends Controller
                         'password' => bcrypt($up_password),
                     ]
             );
+
         }
-        // PW:×
-        // BIO:〇
-        // IMG:×
-        elseif (!isset( $up_password ) && isset( $up_bio ) && !isset( $filenameWithExt ) ){
-
-            $validator = $request->validate([
-
-                'username' => 'required|string|min:2|max:12',
-                'mail' => 'required|string|email|min:5|max:40|unique:users',
-                'bio' => 'max:150',
-            ]);
-
-            if ($validator->fails()) {
-                    return redirect('/profile')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            \DB::table('users')
-            ->where('id', $id)
-            ->update(
-                    [
-                        'username' => $up_username,
-                        'mail' => $up_mail,
-                        'bio' => $up_bio,
-                    ]
-            );
-        }
-        // PW:×
         // BIO:×
         // IMG:〇
-        elseif (!isset( $up_password ) && !isset( $up_bio ) && isset( $filenameWithExt ) ){
+        elseif (!isset( $up_bio ) && isset( $filenameWithExt ) ){
 
-            $validator = $request->validate([
 
+            $validator = Validator::make($data,[
                 'username' => 'required|string|min:2|max:12',
-                'mail' => 'required|string|email|min:5|max:40|unique:users',
+                'mail' => 'required|string|email|min:5|max:40|unique:users,mail,'.$id.',id',
+                'password' => 'string|min:8|max:20|confirmed',
+                'password_confirmation' => 'string|min:8|max: 20',
             ]);
 
             if ($validator->fails()) {
@@ -152,27 +98,25 @@ class UsersController extends Controller
                     ->withErrors($validator)
                     ->withInput();
             }
-
-
             \DB::table('users')
             ->where('id', $id)
             ->update(
                     [
                         'username' => $up_username,
                         'mail' => $up_mail,
+                        'password' => bcrypt($up_password),
                         'images' => $filenameToStore,
                     ]
             );
         }
-        // PW:〇
         // BIO:〇
         // IMG:×
-        elseif (isset( $up_password ) && isset( $up_bio ) && !isset( $filenameWithExt ) ){
+        elseif (isset( $up_bio ) && !isset( $filenameWithExt ) ){
 
-            $validator = $request->validate([
 
+            $validator = Validator::make($data,[
                 'username' => 'required|string|min:2|max:12',
-                'mail' => 'required|string|email|min:5|max:40|unique:users',
+                'mail' => 'required|string|email|min:5|max:40|unique:users,mail,'.$id.',id',
                 'password' => 'string|min:8|max:20|confirmed',
                 'password_confirmation' => 'string|min:8|max: 20',
                 'bio' => 'max:150',
@@ -184,7 +128,6 @@ class UsersController extends Controller
                     ->withInput();
             }
 
-
             \DB::table('users')
             ->where('id', $id)
             ->update(
@@ -196,15 +139,16 @@ class UsersController extends Controller
                     ]
             );
         }
-        // PW:×
+
         // BIO:〇
         // IMG:〇
-        elseif (!isset( $up_password ) && isset( $up_bio ) && isset( $filenameWithExt ) ){
+        elseif (isset( $up_bio ) && isset( $filenameWithExt ) ){
 
-            $validator = $request->validate([
-
+            $validator = Validator::make($data,[
                 'username' => 'required|string|min:2|max:12',
-                'mail' => 'required|string|email|min:5|max:40|unique:users',
+                'mail' => 'required|string|email|min:5|max:40|unique:users,mail,'.$id.',id',
+                'password' => 'string|min:8|max:20|confirmed',
+                'password_confirmation' => 'string|min:8|max: 20',
                 'bio' => 'max:150',
             ]);
 
@@ -213,66 +157,6 @@ class UsersController extends Controller
                     ->withErrors($validator)
                     ->withInput();
             }
-
-
-            \DB::table('users')
-            ->where('id', $id)
-            ->update(
-                    [
-                        'username' => $up_username,
-                        'mail' => $up_mail,
-                        'bio' => $up_bio,
-                        'images' => $filenameToStore,
-                    ]
-            );
-        }
-        // PW:〇
-        // BIO:×
-        // IMG:〇
-        elseif (isset( $up_password ) && !isset( $up_bio ) && isset( $filenameWithExt ) ){
-
-            $validator = $request->validate([
-
-                'username' => 'required|string|min:2|max:12',
-                'mail' => 'required|string|email|min:5|max:40|unique:users',
-                'password' => 'string|min:8|max:20|confirmed',
-                'password_confirmation' => 'string|min:8|max: 20',
-            ]);
-
-            if ($validator->fails()) {
-                    return redirect('/profile')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-            \DB::table('users')
-            ->where('id', $id)
-            ->update(
-                    [
-                        'username' => $up_username,
-                        'mail' => $up_mail,
-                        'password' => bcrypt($up_password),
-                        'images' => $filenameToStore,
-                    ]
-            );
-        }
-        // PW:〇
-        // BIO:〇
-        // IMG:〇
-        elseif (isset( $up_password ) && isset( $up_bio ) && isset( $filenameWithExt ) ){
-
-            $validator = $request->validate([
-
-                'username' => 'required|string|min:2|max:12',
-                'mail' => 'required|string|email|min:5|max:40|unique:users',
-                'password' => 'string|min:8|max:20|confirmed',
-                'password_confirmation' => 'string|min:8|max: 20',
-            ]);
-
-            if ($validator->fails()) {
-                    return redirect('/profile')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
             \DB::table('users')
             ->where('id', $id)
             ->update(
@@ -286,17 +170,7 @@ class UsersController extends Controller
             );
         }
 
-        // \DB::table('users')
-        //  ->where('id', $id)
-        //  ->update(
-        //          [
-        //             'username' => $up_username,
-        //             'mail' => $up_mail,
-        //             'password' => bcrypt($up_password),
-        //             'bio' => $up_bio,
-        //             'images' => $filenameToStore,
-        //          ]
-        // );
+
 
 
         return redirect('/profile');

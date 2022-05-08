@@ -39,7 +39,7 @@
 
     <div class="margin-form form">
       {{ Form::label('パスワード確認') }}
-      {{ Form::text('password_confirmation',null,['class' => 'input']) }}
+      {{ Form::password('password_confirmation',null,['class' => 'input']) }}
     </div>
 
     <div class="btn-form">

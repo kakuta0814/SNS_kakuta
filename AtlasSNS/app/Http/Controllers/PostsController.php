@@ -66,7 +66,7 @@ class PostsController extends Controller
             ->where('id', $id)
             ->delete();
 
-        return redirect('posts.index');
+        return redirect('top');
     }
 
 
@@ -81,7 +81,7 @@ class PostsController extends Controller
         // $follower_count = $follow->getFollowerCount($user->id);
 
         $all_posts = \DB::table('posts')
-            ->select('users.id', 'users.username', 'users.images', 'posts.id', 'posts.user_id', 'posts.post', 'posts.created_at')
+            ->select( 'users.username', 'users.images', 'posts.id', 'posts.user_id', 'posts.post', 'posts.created_at')
             ->leftjoin('users', 'users.id', '=', 'posts.user_id')
             ->orderBy('created_at', 'DESC')
             ->get();

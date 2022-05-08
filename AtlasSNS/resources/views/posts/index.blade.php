@@ -79,27 +79,45 @@
             @if(auth()->user()->id == $post->user_id)
                     <div class="my-tweet">
 
-                        <a href="/post/{{$post->id}}/delete" onclick="return confirm('この投稿を削除します。よろしいでしょうか？')">
+
+                        <a href="/post/delete/{{$post->id}}" onclick="return confirm('この投稿を削除します。よろしいでしょうか？')">
                             <div class="tweet-delete">
                                 <i class="fas fa-trash-alt delete-icon"></i>
                             </div>
                         </a>
 
-                        <a class="js-modal-open" href="" post="{{ $post->post }}" post_id="{{$post->id}}">
+
+                        <!-- <button class="openModal">
                             <div class="tweet-update">
                                 <i class="fas fa-edit update-icon"></i>
                             </div>
-                        </a>
+                        </button> -->
+
+                        <div class="content">
+                            <!-- 投稿の編集ボタン -->
+                            <a class="js-modal-open" href="" post="{{ $post->post }}" post_id="{{ $post->id }}"><i class="fas fa-edit update-icon"></i></a>
+                        </div>
+
+
 
                     </div>
-                @endif
+
+
+
+
+
+            @endif
 
         </div>
-        @endif
+
 
 
     </div>
+    @endif
 @endforeach
+
+<!-- モーダルエリアここから -->
+
 
             <!-- モーダルの中身 -->
     <div class="modal js-modal">
@@ -107,12 +125,15 @@
         <div class="modal__content">
            <form action="/update" method="post">
                @csrf
-                <textarea name="post" class="modal_post"></textarea>
+                <textarea name="post" class="modal_post" cols="95" rows="8"></textarea>
                 <input type="hidden" name="id" class="modal_id" value="">
-                <input type="submit" value="更新">
+                <div class="update-area">
+                    <button class="btn" type="submit"><i class="fas fa-edit update-icon"></i></button>
+                </div>
+
 
            </form>
-           <a class="js-modal-close" href="">閉じる</a>
+           <!-- <a class="js-modal-close" href="">閉じる</a> -->
         </div>
     </div>
 
