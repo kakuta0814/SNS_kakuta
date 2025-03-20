@@ -1,1 +1,1 @@
-# AtlasSNS_kakuta
+# SNS_kakuta
